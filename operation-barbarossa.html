@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Operation Barbarossa</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;900&family=Source+Serif+4:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f3efe6;
+    --bg-panel: #ffffff;
+    --ink: #1c1a16;
+    --ink-soft: #4a463d;
+    --rule: #d9d2c1;
+    --rust: #8a2e1f;
+    --rust-deep: #5e1d13;
+    --gold: #a8792f;
+    --olive: #4a4f3a;
+    font-size: 17px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #161512;
+      --bg-panel: #201e1a;
+      --ink: #ece7db;
+      --ink-soft: #bdb6a5;
+      --rule: #3a362c;
+      --rust: #d9694f;
+      --rust-deep: #e88369;
+      --gold: #d3a75c;
+      --olive: #9aa07f;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #161512;
+    --bg-panel: #201e1a;
+    --ink: #ece7db;
+    --ink-soft: #bdb6a5;
+    --rule: #3a362c;
+    --rust: #d9694f;
+    --rust-deep: #e88369;
+    --gold: #d3a75c;
+    --olive: #9aa07f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: 'Source Serif 4', Georgia, serif;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  a { color: var(--rust); }
+
+  .masthead {
+    border-bottom: 3px solid var(--ink);
+    padding: 2.4rem 1.5rem 1.4rem;
+    text-align: center;
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 26px, rgba(138,46,31,0.035) 26px, rgba(138,46,31,0.035) 27px);
+  }
+  .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    letter-spacing: 0.25em;
+    font-size: 0.68rem;
+    color: var(--rust);
+    text-transform: uppercase;
+  }
+  h1.title {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: clamp(2.6rem, 9vw, 5rem);
+    margin: 0.3rem 0 0.2rem;
+    letter-spacing: -0.01em;
+    line-height: 0.95;
+  }
+  .subtitle {
+    font-style: italic;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 640px;
+    margin: 0.6rem auto 0;
+  }
+  .dateline {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    color: var(--ink-soft);
+    margin-top: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.4rem;
+    justify-content: center;
+  }
+  .dateline b { color: var(--ink); }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 4rem;
+  }
+
+  .stat-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+    margin: 0 0 2.6rem;
+  }
+  .stat {
+    background: var(--bg-panel);
+    padding: 1rem 0.8rem;
+    text-align: center;
+  }
+  .stat .num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--rust-deep);
+    display: block;
+  }
+  .stat .label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-soft);
+  }
+
+  section { margin-bottom: 2.8rem; }
+  h2.head {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 0.4rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  h2.head .no {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--rust);
+    font-weight: 500;
+  }
+  p { line-height: 1.7; color: var(--ink); margin: 0 0 1rem; }
+  .lede { font-size: 1.12rem; }
+  .lede::first-letter {
+    font-family: 'Playfair Display', serif;
+    font-weight: 900;
+    font-size: 3.6rem;
+    float: left;
+    line-height: 0.8;
+    padding: 0.1rem 0.35rem 0 0;
+    color: var(--rust-deep);
+  }
+
+  .pullquote {
+    border-left: 4px solid var(--rust);
+    padding: 0.3rem 0 0.3rem 1.2rem;
+    font-style: italic;
+    font-size: 1.15rem;
+    color: var(--ink-soft);
+    margin: 1.6rem 0;
+  }
+
+  .groups {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 1rem;
+  }
+  .card {
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    padding: 1.1rem 1.2rem;
+    border-top: 4px solid var(--olive);
+  }
+  .card.north { border-top-color: #4a6f8a; }
+  .card.center { border-top-color: var(--gold); }
+  .card.south { border-top-color: var(--rust); }
+  .card h3 {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 0.3rem;
+    font-size: 1.15rem;
+  }
+  .card .cmd {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--ink-soft);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+  .card p { font-size: 0.95rem; margin: 0; color: var(--ink-soft); }
+
+  .timeline {
+    position: relative;
+    padding-left: 1.6rem;
+    border-left: 2px solid var(--rule);
+  }
+  .tl-item { position: relative; padding-bottom: 1.5rem; }
+  .tl-item:last-child { padding-bottom: 0; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -1.86rem;
+    top: 0.3rem;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--rust);
+    border: 2px solid var(--bg);
+    box-shadow: 0 0 0 1px var(--rust);
+  }
+  .tl-date {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--rust-deep);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 0.15rem;
+  }
+  .tl-item h4 { margin: 0 0 0.25rem; font-family: 'Playfair Display', serif; font-size: 1.05rem; }
+  .tl-item p { margin: 0; font-size: 0.95rem; color: var(--ink-soft); }
+
+  table.comp {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+  table.comp caption {
+    text-align: left;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--ink-soft);
+    margin-bottom: 0.5rem;
+  }
+  table.comp th, table.comp td {
+    border-bottom: 1px solid var(--rule);
+    padding: 0.55rem 0.6rem;
+    text-align: left;
+  }
+  table.comp th {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-soft);
+  }
+  table.comp td.num { font-family: 'JetBrains Mono', monospace; }
+  .table-wrap { overflow-x: auto; }
+
+  .legacy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem;
+  }
+  .legacy-grid .item h4 {
+    font-family: 'Playfair Display', serif;
+    margin: 0 0 0.3rem;
+    color: var(--rust-deep);
+    font-size: 1.05rem;
+  }
+  .legacy-grid .item p { font-size: 0.95rem; margin: 0; }
+
+  footer {
+    border-top: 3px solid var(--ink);
+    padding: 1.6rem 1.5rem 2.4rem;
+    text-align: center;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--ink-soft);
+    letter-spacing: 0.03em;
+  }
+  footer a { color: var(--ink-soft); }
+
+  .table-wrap { -webkit-overflow-scrolling: touch; }
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="eyebrow">Eastern Front · World War II · 1941</div>
+  <h1 class="title">Operation<br>Barbarossa</h1>
+  <p class="subtitle">The Axis invasion of the Soviet Union — the largest land offensive in the history of warfare, and the opening of the deadliest theatre of the Second World War.</p>
+  <div class="dateline">
+    <span><b>Launched</b> 22 June 1941</span>
+    <span><b>Ended</b> 5 December 1941</span>
+    <span><b>Front</b> ~2,900 km</span>
+    <span><b>Codename honours</b> Frederick Barbarossa</span>
+  </div>
+</header>
+
+<main>
+
+  <div class="stat-strip">
+    <div class="stat"><span class="num">3.8M+</span><span class="label">Axis troops</span></div>
+    <div class="stat"><span class="num">~10M</span><span class="label">Combatants, opening phase</span></div>
+    <div class="stat"><span class="num">8M+</span><span class="label">Total casualties</span></div>
+    <div class="stat"><span class="num">168</span><span class="label">Days of campaign</span></div>
+  </div>
+
+  <section id="overview">
+    <h2 class="head"><span class="no">01</span> Overview</h2>
+    <p class="lede">At dawn on 22 June 1941, Nazi Germany and a coalition of Axis partners tore up the two-year-old non-aggression pact with the Soviet Union and launched a surprise invasion along a front stretching nearly 2,900 kilometres, from the Baltic to the Black Sea. The operation — codenamed after the medieval Holy Roman Emperor Frederick "Redbeard" Barbarossa — aimed to smash the Red Army in a swift campaign and seize Soviet territory as far east as a line running from Arkhangelsk to Astrakhan, the so-called A–A line.</p>
+    <p>It was, by any measure, the largest military offensive ever mounted. Well over three million Axis soldiers, thousands of tanks and aircraft, and hundreds of thousands of vehicles and horses crossed the frontier in a single coordinated assault. By the time the offensive stalled outside Moscow in early December, the fighting had produced millions of casualties on both sides and pulled the Soviet Union irrevocably into the Allied camp.</p>
+    <div class="pullquote">A war of annihilation as much as conquest — driven by the Nazi ambition to destroy Soviet communism, seize "living space" in the east, and subjugate or eliminate the populations living there.</div>
+    <p>Barbarossa's failure to deliver the quick knockout Hitler had promised his generals is widely regarded by historians as the turning point of the war in Europe: the moment Germany committed itself to a two-front, attritional conflict it could not sustain.</p>
+  </section>
+
+  <section id="background">
+    <h2 class="head"><span class="no">02</span> Background</h2>
+    <p>Germany and the Soviet Union had signed the Molotov–Ribbentrop non-aggression pact in August 1939, carving up Eastern Europe between them and freeing Hitler to invade Poland without fear of a two-front war. But the pact was, in Hitler's own view, a temporary convenience. He regarded the destruction of Soviet communism and the conquest of the western USSR as central to Nazi ideology, envisioning the region resettled by Germans under the "Generalplan Ost" and its Slavic population enslaved, deported, or exterminated.</p>
+    <p>Planning began in the summer of 1940, and Hitler formally authorized the invasion on 18 December 1940. German commanders studied Napoleon's disastrous 1812 campaign in Russia and tried to design around its failures, but disagreement over the campaign's central objective — Moscow, or the resource-rich Ukraine and Baltic — persisted at the highest levels of the German command throughout the planning process and into the campaign itself. The attack, originally intended for mid-May 1941, was delayed until late June.</p>
+  </section>
+
+  <section id="forces">
+    <h2 class="head"><span class="no">03</span> The Three Army Groups</h2>
+    <p>The Wehrmacht organized its invasion force into three army groups, each assigned a separate strategic axis and objective, supported by Finnish forces in the north and Romanian, Hungarian, Italian, and Slovak divisions in the south.</p>
+    <div class="groups">
+      <div class="card north">
+        <h3>Army Group North</h3>
+        <span class="cmd">Wilhelm Ritter von Leeb</span>
+        <p>Advanced from East Prussia through the Baltic states of Lithuania, Latvia, and Estonia, aiming to link with Finnish forces and capture Leningrad.</p>
+      </div>
+      <div class="card center">
+        <h3>Army Group Centre</h3>
+        <span class="cmd">Fedor von Bock</span>
+        <p>Drove east from around Warsaw along the historic invasion route through Minsk and Smolensk, with Moscow as its ultimate objective.</p>
+      </div>
+      <div class="card south">
+        <h3>Army Group South</h3>
+        <span class="cmd">Gerd von Rundstedt</span>
+        <p>Pushed into Ukraine to seize Kiev, the Black Sea coast, and the agricultural and industrial heartland, before pressing toward the Caucasus oilfields.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="comparison">
+    <h2 class="head"><span class="no">04</span> Forces at the Frontier</h2>
+    <div class="table-wrap">
+      <table class="comp">
+        <caption>Approximate strength, June 1941</caption>
+        <thead>
+          <tr><th>Force</th><th>Axis</th><th>Soviet</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Personnel</td><td class="num">~3.6–3.8 million</td><td class="num">~2.9 million (western districts)</td></tr>
+          <tr><td>Tanks</td><td class="num">~3,600</td><td class="num">10,000–15,000</td></tr>
+          <tr><td>Aircraft</td><td class="num">~2,700–3,900</td><td class="num">~8,000</td></tr>
+          <tr><td>Divisions</td><td class="num">~138–150</td><td class="num">~190+ in the west</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="margin-top:0.8rem; font-size:0.9rem; color:var(--ink-soft);">Figures vary between sources; the Red Army held a numerical edge in tanks and aircraft, but much of its equipment was obsolete, poorly positioned, or left unready after the officer purges of the 1930s.</p>
+  </section>
+
+  <section id="timeline">
+    <h2 class="head"><span class="no">05</span> Course of the Campaign</h2>
+    <div class="timeline">
+      <div class="tl-item">
+        <span class="tl-date">22 June 1941</span>
+        <h4>Invasion begins</h4>
+        <p>Axis forces cross the frontier at 03:00 after a brief bombardment. The Luftwaffe quickly establishes air superiority, catching much of the Soviet air force on the ground.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">Late June – July</span>
+        <h4>Encirclements and rapid advance</h4>
+        <p>Massive pincer movements trap hundreds of thousands of Red Army troops around Białystok, Minsk, and Smolensk. German commanders report huge hauls of prisoners, tanks, and guns within weeks.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">August 1941</span>
+        <h4>Hitler diverts from Moscow</h4>
+        <p>Over the objections of his generals, Hitler redirects Army Group Centre's panzer forces south to reinforce the drive on Kiev and the Ukraine, delaying the advance on Moscow.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">September 1941</span>
+        <h4>Kiev falls; Leningrad besieged</h4>
+        <p>One of the largest encirclements in military history closes around Kiev. In the north, German and Finnish forces fail to take Leningrad outright and instead begin a siege that will last nearly 900 days.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">October 1941</span>
+        <h4>Operation Typhoon</h4>
+        <p>The renewed offensive on Moscow begins. Early gains stall as autumn rains turn roads to mud, slowing the German advance and buying the Soviets crucial time.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">November – early December 1941</span>
+        <h4>Stalled before Moscow</h4>
+        <p>German spearheads come within sight of the capital but are exhausted, undersupplied, and unprepared for the onset of winter. Fresh Soviet reserves, including Siberian divisions, reinforce the city's defences.</p>
+      </div>
+      <div class="tl-item">
+        <span class="tl-date">5 December 1941</span>
+        <h4>Soviet counteroffensive</h4>
+        <p>A large-scale Red Army counterattack pushes German forces back from the outskirts of Moscow, marking the effective end of Barbarossa and the collapse of Germany's plan for a swift victory in the east.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="outcome">
+    <h2 class="head"><span class="no">06</span> Outcome</h2>
+    <p>Barbarossa achieved staggering territorial and tactical gains — hundreds of thousands of Soviet troops captured, vast stretches of Belarus, Ukraine, and the Baltic states occupied — but it failed in its central strategic aim of destroying the Soviet state before winter. The Red Army, though battered, was not broken; it absorbed catastrophic losses and kept fighting. The result was officially recorded as an Axis operational success but a strategic failure: Germany had gained ground, but not the war-ending victory it needed.</p>
+    <p>The campaign opened the Eastern Front, which would remain the largest and most destructive theatre of the entire war through to Germany's surrender in 1945. Having failed to win quickly, Germany found itself locked into the prolonged, resource-draining conflict that Hitler had originally hoped to avoid.</p>
+  </section>
+
+  <section id="legacy">
+    <h2 class="head"><span class="no">07</span> Legacy</h2>
+    <div class="legacy-grid">
+      <div class="item">
+        <h4>A turning point</h4>
+        <p>Historians widely regard Barbarossa's failure as the moment the strategic initiative in Europe began shifting away from Germany, setting up the later disasters at Stalingrad and Kursk.</p>
+      </div>
+      <div class="item">
+        <h4>The Allied realignment</h4>
+        <p>The invasion pushed the Soviet Union into the Allied powers alongside Britain and, later, the United States — reshaping the entire course of the war.</p>
+      </div>
+      <div class="item">
+        <h4>Human cost</h4>
+        <p>The campaign and the occupation that followed brought immense civilian suffering across Eastern Europe, entwining military conquest with the broader Nazi campaign of racial extermination.</p>
+      </div>
+      <div class="item">
+        <h4>Military lessons</h4>
+        <p>Barbarossa is still studied as a case study in the risks of overextension, divided objectives among commanders, and underestimating an opponent's capacity to absorb losses and recover.</p>
+      </div>
+    </div>
+  </section>
+
+<///////////////////////////////////////////////////////////////////////////////////////////>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Team Barbarossa</title>
+<style>
+  :root{
+    --bg:#0f1115;
+    --card:#171a21;
+    --border:#262b36;
+    --text:#eef0f4;
+    --muted:#9aa3b2;
+    --accent:#c0392b;
+    --accent2:#e67e22;
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#f4f5f7;
+      --card:#ffffff;
+      --border:#e2e5ea;
+      --text:#1a1d24;
+      --muted:#5b6270;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0f1115; --card:#171a21; --border:#262b36; --text:#eef0f4; --muted:#9aa3b2;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:'Segoe UI', system-ui, -apple-system, sans-serif;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  header{
+    text-align:center;
+    padding:48px 20px 28px;
+  }
+  header h1{
+    margin:0 0 8px;
+    font-size:clamp(28px,5vw,42px);
+    letter-spacing:1px;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  header p{
+    margin:0;
+    color:var(--muted);
+    font-size:15px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+    gap:20px;
+    max-width:1200px;
+    margin:0 auto;
+    padding:0 24px 60px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:20px 14px 18px;
+    text-align:center;
+    transition:transform .15s ease, border-color .15s ease;
+  }
+  .card:hover{
+    transform:translateY(-4px);
+    border-color:var(--accent);
+  }
+  .portrait{
+    width:96px;
+    height:96px;
+    margin:0 auto 14px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:700;
+    font-size:28px;
+    color:#fff;
+    border:3px solid var(--accent2);
+  }
+  .name{
+    font-size:15px;
+    font-weight:600;
+    margin:0 0 4px;
+  }
+  .role{
+    font-size:12.5px;
+    color:var(--muted);
+    margin:0;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚔ Team Barbarossa</h1>
+  <p>Meet the 14 members of the crew</p>
+</header>
+
+<div class="grid" id="teamGrid"></div>
+
+<script>
+  // Replace name/role with real data, and swap portrait background for a real <img> if you have photos.
+  const members = [
+    { name: "Member 1",  role: "Captain" },
+    { name: "Member 2",  role: "First Mate" },
+    { name: "Member 3",  role: "Navigator" },
+    { name: "Member 4",  role: "Strategist" },
+    { name: "Member 5",  role: "Engineer" },
+    { name: "Member 6",  role: "Scout" },
+    { name: "Member 7",  role: "Medic" },
+    { name: "Member 8",  role: "Gunner" },
+    { name: "Member 9",  role: "Quartermaster" },
+    { name: "Member 10", role: "Tactician" },
+    { name: "Member 11", role: "Diplomat" },
+    { name: "Member 12", role: "Lookout" },
+    { name: "Member 13", role: "Support" },
+    { name: "Member 14", role: "Recruit" }
+  ];
+
+  const palette = ["#c0392b","#e67e22","#8e44ad","#2c3e50","#16a085","#2980b9","#d35400"];
+
+  function initials(name){
+    return name.split(" ").map(w => w[0]).join("").slice(0,2).toUpperCase();
+  }
+
+  const grid = document.getElementById("teamGrid");
+  members.forEach((m, i) => {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <div class="portrait" style="background:${palette[i % palette.length]}">
+        ${initials(m.name)}
+      </div>
+      <p class="name">${m.name}</p>
+      <p class="role">${m.role}</p>
+    `;
+    grid.appendChild(card);
+  });
+</script>
+
+<///////////////////////////////////////////////////////////////////////////////////////////>
+</main>
+
+<footer>
+  Compiled from public historical summaries of Operation Barbarossa, June–December 1941 · Figures are approximate and vary by source
+</footer>
+
+</body>
+</html>
