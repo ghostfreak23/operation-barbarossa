@@ -283,6 +283,24 @@
   footer a { color: var(--ink-soft); }
 
   .table-wrap { -webkit-overflow-scrolling: touch; }
+
+  /* ===== Other Resources (Google Drive) ===== */
+  .resource-link {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg-panel);
+    border: 1px solid var(--rule);
+    border-left: 4px solid var(--rust);
+    padding: 1rem 1.2rem;
+    text-decoration: none;
+    color: var(--ink);
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .resource-link:hover { transform: translateY(-2px); border-color: var(--rust); }
+  .resource-link .icon { font-size: 1.8rem; }
+  .resource-link strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.05rem; }
+  .resource-link small { color: var(--ink-soft); font-size: 0.85rem; }
 </style>
 </head>
 <body>
@@ -430,6 +448,17 @@
         <p>Barbarossa is still studied as a case study in the risks of overextension, divided objectives among commanders, and underestimating an opponent's capacity to absorb losses and recover.</p>
       </div>
     </div>
+  </section>
+
+  <section id="resources">
+    <h2 class="head"><span class="no">08</span> Other Resources</h2>
+    <a class="resource-link" href="https://drive.google.com/drive/u/0/folders/1HCsZ0QX4yklPC6YxhsUjPEoTuyKKbN9d" target="_blank" rel="noopener noreferrer">
+      <span class="icon">📁</span>
+      <span>
+        <strong>Google Drive Folder</strong>
+        <small>Open documents, maps and reference material</small>
+      </span>
+    </a>
   </section>
 
 <///////////////////////////////////////////////////////////////////////////////////////////>
